@@ -50,7 +50,7 @@ class MyTest(unittest.TestCase):
     @unittest.skip('need a database with test data to run this test')
     def test_search(self):
         collection = mongo_collection()
-        ids = get_all_ids(collection)
+        ids = get_all_ids(collection, limit=100)
         hit = 0
         for i in range(0, 10):
             length = random.randrange(1, 2)
