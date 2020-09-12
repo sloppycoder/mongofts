@@ -1,5 +1,6 @@
 import pytest
-from gen_rand_trans import *
+import random
+from gen_rand_trans import mongo_collection, get_all_ids, gen, search_trans
 
 
 @pytest.mark.benchmark(
@@ -12,7 +13,7 @@ def test_search(benchmark):
     ids = get_all_ids(collection, limit=100000)
     loop = 100
     hits = benchmark(search, collection, ids, loop=loop)
-    print(f'loop={loop} search hits = {hits}')
+    print(f"loop={loop} search hits = {hits}")
     assert hits > 0
 
 
@@ -33,6 +34,7 @@ def search(collection, ids, loop=10):
     return hit
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import sys
+
     pytest.main(sys.argv)

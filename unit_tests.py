@@ -2,16 +2,15 @@ import unittest
 
 from gen_rand_trans import *
 
-
 class MyTest(unittest.TestCase):
     def test_default_args(self):
-        params = ['-n', '5']
+        params = ["-n", "5"]
         opts = parse_args(params)
         self.assertEqual(DEFAULT_AVG, opts.avg)
         self.assertFalse(opts.drop)
 
     def test_custom_args(self):
-        params = ['-n', '5', '--avg', '99', '--drop']
+        params = ["-n", "5", "--avg", "99", "--drop"]
         opts = parse_args(params)
         self.assertEqual(5, opts.n)
         self.assertEqual(99, opts.avg)
@@ -23,9 +22,9 @@ class MyTest(unittest.TestCase):
         self.assertEqual(1000, len(uniq_ids))
 
     def test_new_tran(self):
-        tran = new_tran('1000')
+        tran = new_tran("1000")
         self.assertIsNotNone(tran)
-        self.assertIsNotNone(tran['memo'])
+        self.assertIsNotNone(tran["memo"])
 
     def test_gen_batch_1(self):
         n = gen_random_trans(1, 3, batch_size=2)
@@ -46,6 +45,7 @@ class MyTest(unittest.TestCase):
     # @unittest.skip('need a database with test data to run this test')
     def test_search(self):
         import random
+
         collection = mongo_collection()
         ids = get_all_ids(collection, limit=100)
         hit = 0
@@ -55,8 +55,8 @@ class MyTest(unittest.TestCase):
             keyword = gen.word()[:length]
             matches = search_trans(collection, account_no, keyword)
             hit += len(matches)
-        print(f'hits = {hit}')
+        print(f"hits = {hit}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

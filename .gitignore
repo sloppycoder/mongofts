@@ -9,8 +9,6 @@
 *.jar
 .DS_Store
 
-.idea
-
 # directories
 **/bin/*
 **/tmp/*
@@ -34,10 +32,10 @@
 # python stuff
 **/venv/
 **/__pycache__
+**/.benchmarks/
+**/.pytest_cache/
 *.pyc
+
 
 # nodejs stuff
 **/node_modules/
-
-# config files
-oauth_client.ini
