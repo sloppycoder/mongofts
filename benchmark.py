@@ -10,8 +10,9 @@ from gen_rand_trans import *
 def test_search(benchmark):
     collection = mongo_collection()
     ids = get_all_ids(collection, limit=100000)
-    hits = benchmark(search, collection, ids, loop=100)
-    print(f'search hits = {hits}')
+    loop = 100
+    hits = benchmark(search, collection, ids, loop=loop)
+    print(f'loop={loop} search hits = {hits}')
     assert hits > 0
 
 
