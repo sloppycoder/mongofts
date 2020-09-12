@@ -55,12 +55,9 @@ class MyTest(unittest.TestCase):
         for i in range(0, 10):
             length = random.randrange(1, 2)
             account_no = ids[random.randrange(0, len(ids))]
-            search_term = self.gen.word()[:length]
-            matches = [t for t in
-                       collection.find({'account_no': account_no,
-                                        '$text': {'$search': search_term}})]
-            if len(matches) > 0:
-                hit += 1
+            keyword = self.gen.word()[:length]
+            matches = search_trans(collection, account_no, keyword)
+            hit += len(matches)
         print(f'hits = {hit}')
 
 

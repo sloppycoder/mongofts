@@ -44,6 +44,11 @@ def gen_random_trans(num_of_accounts, avg_per_account, batch_size=BATCH_SIZE):
             bulk.clear()
 
 
+def search_trans(collection, account_no, keyword):
+    return [t for t in collection.find({'account_no': account_no,
+                                        '$text': {'$search': keyword}})]
+
+
 def create_rand_trans(mongodb_url, num_of_accounts, avg_per_account, force_drop=False):
     collection = mongo_collection(mongodb_url)
     if force_drop:

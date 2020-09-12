@@ -9,7 +9,7 @@ from gen_rand_trans import *
 )
 def test_search(benchmark):
     collection = mongo_collection()
-    ids = get_all_ids(collection)
+    ids = get_all_ids(collection, limit=100000)
     for tran in collection.find({}, {'account_no': 1}):
         ids.append(tran['account_no'])
     print(f'using {len(ids)} account numbers')
@@ -25,10 +25,12 @@ def search(collection, ids, gen, loop=10):
     for i in range(0, loop):
         length = random.randrange(2, 6)
         account_no = ids[random.randrange(0, total)]
-        search_term = gen.word()[:length]
-        matches = [t for t in
-                   collection.find({'account_no': account_no,
-                                    '$text': {'$search': search_term}})]
-        if len(matches) > 0:
-            hit += 1
+        keyword = gen.word()[:length]
+        matches = search_trans(collection, account_no, keyword)
+        hit += len(matches)
     return hit
+
+
+if __name__ == '__main__':
+    import sys
+    pytest.main(sys.argv)
