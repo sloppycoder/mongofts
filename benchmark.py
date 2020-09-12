@@ -10,10 +10,6 @@ from gen_rand_trans import *
 def test_search(benchmark):
     collection = mongo_collection()
     ids = get_all_ids(collection, limit=100000)
-    for tran in collection.find({}, {'account_no': 1}):
-        ids.append(tran['account_no'])
-    print(f'using {len(ids)} account numbers')
-    gen = DocumentGenerator()
     result = benchmark(search, collection, ids, loop=100)
     assert result > 0
 
