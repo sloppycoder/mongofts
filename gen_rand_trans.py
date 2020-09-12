@@ -1,7 +1,5 @@
 import pymongo
-import argparse
 import random
-import sys
 from datetime import datetime, timedelta
 from essential_generators import DocumentGenerator
 
@@ -10,17 +8,26 @@ BATCH_SIZE = 1000
 LAST_TS = datetime.utcnow()
 TS_RANGE = 3600 * 30 * 3 + 1  # seconds in 3 months
 DEFAULT_AVG = 50
+
+# globals
 mongo_client = None
+gen = DocumentGenerator()
 
 
-def gen_account_ids(gen, num_of_accounts):
+def gen_account_ids(num_of_accounts):
+    """
+    generate a list of unique account numbers
+    """
     ids = []
     for i in range(0, num_of_accounts):
         ids.append(gen.phone().replace('-', '') + str(random.randrange(10000, 19999)))
     return ids
 
 
-def new_tran(gen, account_no):
+def new_tran(account_no):
+    """
+    generate a new transaction with randomly generated data
+    """
     secs = random.randrange(0, TS_RANGE)
     return {
         'account_no': account_no,
@@ -32,13 +39,19 @@ def new_tran(gen, account_no):
 
 
 def gen_random_trans(num_of_accounts, avg_per_account, batch_size=BATCH_SIZE):
-    gen = DocumentGenerator()
+    """
+    generate random transactions
+    and return them in list up to batch_size entries
+    using generator
+
+    The total number of transactions will be num_of_accounts * avg_per_account
+    """
     total = num_of_accounts * avg_per_account
-    ids = gen_account_ids(gen, num_of_accounts)
+    ids = gen_account_ids(num_of_accounts)
     bulk = []
     for i in range(0, total):
         n = random.randrange(0, num_of_accounts)
-        bulk.append(new_tran(gen, ids[n]))
+        bulk.append(new_tran(ids[n]))
         if len(bulk) == batch_size or i >= total - 1:
             yield bulk
             bulk.clear()
@@ -59,6 +72,9 @@ def create_rand_trans(mongodb_url, num_of_accounts, avg_per_account, force_drop=
 
 
 def get_all_ids(collection, limit=0):
+    """
+    retrieve a list of account no from collection
+    """
     ids = []
     for tran in collection.find({}, {'account_no': 1}).limit(limit):
         ids.append(tran['account_no'])
@@ -75,7 +91,8 @@ def mongo_collection(mongodb_url=MONGODB_URL):
 
 
 def parse_args(args):
-    parser = argparse.ArgumentParser(description='Generate random transactions and store them in mongo')
+    from argparse import ArgumentParser
+    parser = ArgumentParser(description='Generate random transactions and store them in mongo')
     parser.add_argument('--db', default=MONGODB_URL, metavar='MONGODB_URL')
     parser.add_argument('-n', type=int, metavar='NUM_OF_ACCOUNTS',
                         help='number of accounts to generate')
@@ -87,6 +104,6 @@ def parse_args(args):
 
 
 if __name__ == '__main__':
-    random.seed(LAST_TS.microsecond)
+    import sys
     args = parse_args(sys.argv[1:])
     create_rand_trans(args.db, args.n, args.avg, args.drop)

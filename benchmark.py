@@ -14,12 +14,16 @@ def test_search(benchmark):
         ids.append(tran['account_no'])
     print(f'using {len(ids)} account numbers')
     gen = DocumentGenerator()
-    result = benchmark(search, collection, ids, gen, loop=100)
-    print(result)
+    result = benchmark(search, collection, ids, loop=100)
     assert result > 0
 
 
-def search(collection, ids, gen, loop=10):
+def search(collection, ids, loop=10):
+    """
+    perform a search on collection with account no and keyword
+    account no is randomly picked ids
+    search keyword is the first N (2 <= N <= 6) chars from a random word
+    """
     hit = 0
     total = len(ids)
     for i in range(0, loop):

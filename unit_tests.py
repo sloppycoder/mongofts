@@ -1,13 +1,9 @@
 import unittest
 
 from gen_rand_trans import *
-from essential_generators import DocumentGenerator
-import random
 
 
 class MyTest(unittest.TestCase):
-    gen = DocumentGenerator()
-
     def test_default_args(self):
         params = ['-n', '5']
         opts = parse_args(params)
@@ -22,12 +18,12 @@ class MyTest(unittest.TestCase):
         self.assertTrue(opts.drop)
 
     def test_gen_account_ids(self):
-        ids = gen_account_ids(self.gen, 1000)
+        ids = gen_account_ids(1000)
         uniq_ids = list(set(ids))
         self.assertEqual(1000, len(uniq_ids))
 
     def test_new_tran(self):
-        tran = new_tran(self.gen, '1000')
+        tran = new_tran('1000')
         self.assertIsNotNone(tran)
         self.assertIsNotNone(tran['memo'])
 
@@ -47,15 +43,16 @@ class MyTest(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(n)
 
-    @unittest.skip('need a database with test data to run this test')
+    # @unittest.skip('need a database with test data to run this test')
     def test_search(self):
+        import random
         collection = mongo_collection()
         ids = get_all_ids(collection, limit=100)
         hit = 0
         for i in range(0, 10):
             length = random.randrange(1, 2)
             account_no = ids[random.randrange(0, len(ids))]
-            keyword = self.gen.word()[:length]
+            keyword = gen.word()[:length]
             matches = search_trans(collection, account_no, keyword)
             hit += len(matches)
         print(f'hits = {hit}')
