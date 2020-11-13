@@ -1,8 +1,8 @@
 import random
 
 import pytest
-
-from gen_rand_trans import gen, get_all_ids, mongo_collection, search_trans
+from common import gen
+from mongo_rand_trans import get_all_ids, mongo_collection, search_trans
 
 
 @pytest.mark.benchmark(
@@ -35,8 +35,3 @@ def search(collection, ids, loop=10):
         hit += len(matches)
     return hit
 
-
-if __name__ == "__main__":
-    import sys
-
-    pytest.main(sys.argv)
