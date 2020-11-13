@@ -35,6 +35,7 @@
 **/.benchmarks/
 **/.pytest_cache/
 *.pyc
+poetry.toml
 
 
 # nodejs stuff
