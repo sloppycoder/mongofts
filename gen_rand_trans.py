@@ -1,6 +1,7 @@
-import pymongo
 import random
 from datetime import datetime, timedelta
+
+import pymongo
 from essential_generators import DocumentGenerator
 
 MONGODB_URL = "mongodb://dev:dev@localhost:27017/dev?authSource=dev"

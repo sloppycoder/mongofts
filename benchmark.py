@@ -1,6 +1,8 @@
-import pytest
 import random
-from gen_rand_trans import mongo_collection, get_all_ids, gen, search_trans
+
+import pytest
+
+from gen_rand_trans import gen, get_all_ids, mongo_collection, search_trans
 
 
 @pytest.mark.benchmark(

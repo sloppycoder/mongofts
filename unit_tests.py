@@ -2,6 +2,7 @@ import unittest
 
 from gen_rand_trans import *
 
+
 class MyTest(unittest.TestCase):
     def test_default_args(self):
         params = ["-n", "5"]
