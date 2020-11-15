@@ -8,6 +8,7 @@ LAST_TS = datetime.utcnow()
 TS_RANGE = 3600 * 30 * 3 + 1  # seconds in 3 months
 DEFAULT_AVG = 50
 DEFAULT_MONGODB_URL = "mongodb://dev:dev@localhost:27017/dev?authSource=dev"
+DEFAULT_ES_URL = "http://127.0.0.1:9300"
 
 
 gen = DocumentGenerator()
@@ -60,9 +61,11 @@ def parse_args(args):
     from argparse import ArgumentParser
 
     parser = ArgumentParser(
-        description="Generate random transactions and store them in mongo"
+        description="Generate random transactions and store them in mongo or elastic"
     )
+    parser.add_argument("--type", default="mongo", metavar="DB_TYPE")
     parser.add_argument("--db", default=DEFAULT_MONGODB_URL, metavar="MONGODB_URL")
+
     parser.add_argument(
         "-n", type=int, metavar="NUM_OF_ACCOUNTS", help="number of accounts to generate"
     )

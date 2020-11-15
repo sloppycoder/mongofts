@@ -10,6 +10,7 @@ python = "^3.7"
 pymongo = "^3.11.0"
 essential-generators = "^0.9.2"
 pytest-benchmark = "^3.2.3"
+elasticsearch = "^7.10.0"
 
 [tool.isort]
 multi_line_output = 3
